@@ -13,6 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"notebookPath": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/LoadVolume/LoadVolume"
 				},
