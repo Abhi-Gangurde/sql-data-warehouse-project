@@ -15,7 +15,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/LoadVolume/LoadVolume"
+					"notebookPath": {
+						"value": "@pipeline().parameters.LoadVolume",
+						"type": "Expression"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricks1",
