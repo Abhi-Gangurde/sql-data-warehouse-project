@@ -10,6 +10,9 @@
 		},
 		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
 			"value": "0311-155615-9x0bu7j8"
+		},
+		"Trigger_Organization_Sales_properties_typeProperties_scope": {
+			"value": "/subscriptions/912e2517-4056-421f-871d-e4de28302924/resourceGroups/rg_pvr_databricks/providers/Microsoft.Storage/storageAccounts/abhistgac"
 		}
 	}
 }

@@ -15,6 +15,10 @@
 			"type": "string",
 			"defaultValue": "0311-155615-9x0bu7j8"
 		},
+		"Trigger_Organization_Sales_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/912e2517-4056-421f-871d-e4de28302924/resourceGroups/rg_pvr_databricks/providers/Microsoft.Storage/storageAccounts/abhistgac"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +51,9 @@
 					},
 					"AzureDatabricks1_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
+					},
+					"Trigger_Organization_Sales_properties_typeProperties_scope": {
+						"value": "[parameters('Trigger_Organization_Sales_properties_typeProperties_scope')]"
 					}
 				}
 			},

@@ -14,6 +14,10 @@
 		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "0311-155615-9x0bu7j8"
+		},
+		"Trigger_Organization_Sales_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/912e2517-4056-421f-871d-e4de28302924/resourceGroups/rg_pvr_databricks/providers/Microsoft.Storage/storageAccounts/abhistgac"
 		}
 	},
 	"variables": {
@@ -254,6 +258,37 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Trigger_Organization_Sales')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SQL_DWS_MEDALLION",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/devcontainer/blobs/",
+					"blobPathEndsWith": "csv",
+					"ignoreEmptyBlobs": false,
+					"scope": "[parameters('Trigger_Organization_Sales_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/SQL_DWS_MEDALLION')]"
 			]
 		}
 	]
