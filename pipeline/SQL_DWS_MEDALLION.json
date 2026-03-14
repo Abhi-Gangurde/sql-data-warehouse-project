@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "SQL_DWS_MEDALLION",
 	"properties": {
 		"activities": [
 			{
@@ -15,6 +15,87 @@
 				},
 				"typeProperties": {
 					"notebookPath": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/LoadVolume/LoadVolume"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Bronze",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "LoadVolume",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/bronze/Load_Bronze"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/silver/Silver_Orchestration"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Gold",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/gold/Load_Gold"
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricks1",
