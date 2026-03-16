@@ -208,6 +208,8 @@
 				"defaultValue": "/Users/srinivas.adf90@gmail.com/abhi/sql-data-warehouse-project/scripts/silver/Validate_Silver_Orchestration"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2026-03-16T12:31:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
