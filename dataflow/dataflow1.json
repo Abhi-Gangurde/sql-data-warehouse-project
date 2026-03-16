@@ -27,6 +27,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
+				"     moveFiles: ['/datasets/source_crm','/datasets/Output'],",
 				"     partitionBy('hash', 1)) ~> source1"
 			]
 		}
