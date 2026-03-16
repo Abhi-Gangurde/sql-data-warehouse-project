@@ -12,7 +12,11 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "cast1"
@@ -36,7 +40,11 @@
 				"source1 cast(output(",
 				"          cst_id as string",
 				"     ),",
-				"     errors: true) ~> cast1"
+				"     errors: true) ~> cast1",
+				"cast1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
