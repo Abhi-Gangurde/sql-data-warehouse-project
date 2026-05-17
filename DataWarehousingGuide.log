@@ -1,0 +1,96 @@
+Data Lake - Evotion because of the Big Data 
+		  - Unstructured / Semi structure / Strucutered 
+Data Warehouse  - Structured data (99%) / Properly aligned data  for the reporting and the analysis 
+Data Mart - This is the conformed structure of the the data which get utilized by the downstream aPPLICATION 
+
+
+------------------------
+
+OLTP - complex stystem , OL transactional processing , recent data  , R/W operations, Responses in the milliseconds, less maintainence, more 	normalized (upto 3NF), No SQLDb (Dynamo DB, Cosmos Db, Mongo DB)
+
+OLAP - OL analytical processing,Contains all hiostorical data , more denormalized, data is mostly red (Update frequency is very less), filtereed and cleaned, Analytical reporting, complex queries, do not keep raw data, and only strucutred data, uses columner db / systems for the  data storage,
+ETL,  Not a live data. 
+
+---------------------------------
+
+Data Load strategies : -  
+
+1 : Full/ Truncate Load -  Load the whole data from OLTP --> OLAP systems (trucate the target table and load the entire source to target)
+2 : Incremental/ Delta Load - Load the changed data from OLTP --> OLAP systems (Load only the changed or new record to the target system)
+
+----------------------------------
+
+Measures - Quantitative property of  the DW , can be calculated, logical meaning for the aggregations
+	Types of measure : 
+		1. Additive : Summed / aggregated across all the dimensions 
+		2. Semi-additive : Agrregated across the some of the dimensions
+		3. Non-additive : Can not be agregated across any dimensions 
+	Measures goes into the fact table 99% 
+	Every number is not the measure like "room_number"
+Attributes - Helps defining measures, "total sales (measures) per month(attribute)"
+	Grain : To design data warehouse we need to define the grain
+		  : Level of the measurement like per day, per month, total sales per store #Grain atomicity 
+		  : Calculated from low level grain((per day) to the high level gain (per month) 
+	KPI : Key perfomance indicator, main  reason to design the DW 
+		: Requirements compes from the KPI
+		: Measurable value for the company performance
+	Attributes goes into the dimensions table 
+	
+---------------------------------------
+
+Fact and dimensions 
+
+Dimensions : 
+	1. Conformed dimensions: It is the dimensions shared across the multiple fact tables and hold the same meaning across all. 
+				: Can be determined using bus metrics
+	2. Junk Dimensions : It is the single dimension table that holds the low cardinality flags, indicator, codes , boolean columns 
+						 that are related  to the fact table row but do not belogs to any other existing dimensions. 
+					   : Instead of storing the 8 separate flag columns directely on the fact table, combine them into the junk dimension table 
+						 with a single surrogate key and store only that one integewr key on the fact table
+	3. Role Playing Dmensions : A single physical dimension table that is referenced mul;tiple times by the same fact table, with each 
+								referenced representing the different meaning. 
+							  : e.g : A date dimension referenced three times in the sales fact table - like (order_date , ship_date, delivery_date)
+	4. Degenerated Dimensions : A dimension attribute that is stores directly on the fact table because it has no corresponding dimension table and 
+								it does not make sense to create the dimension table for that dimension attributes.
+	5. Slowly Changing Dimensions :  
+		1.SCD Type 1 : Upsert and Incremental Updates
+					 : Only Current Change No History 
+					 : Overwrite
+		2.SCD Type 2 : Incremental Loads ,
+					 : Maintain all the history using introduced column (flag, starty date and end date) 
+		3.SCD Type 3 : Least used 
+					 : Holds the current and the last change 
+					 
+					 
+-------------------------------
+
+Surrogate Key : Artifical key, doesnt exists, does not hold any business value 
+Natural Key   : Unique , Holds business value, existed in the real world
+
+####
+How surrogate key are loaded in the DW 
+In actual scenario mostly dimensions are loaded before facts.
+
+------------------------------------
+Fact table fundamental :
+	:it is central table in the star schema records the measures in t it. 
+	:Every row represent the one instace of the declared grain - one event, one period , one pipeline stage. 
+	:Fact table has threee typesof the column : FK, measure columns, degenerated dimensions columns 
+Types : : : 
+
+1. Transactional Fact Table :  One row per event at a point in time 
+2. Periodic snapshot Table : One row per entity per period 
+3. Accumulating snapshot table : One row per entity lifecycle instaces 
+4. Factless fact table : Froregin key only, no numeric measures 
+		1.Event Factless Fact Table : Recording Occurence  - Records that an even t happened to the specific entity at a specific time.
+									: The event itself is the business fact , there is no quantity or the amount to be measure
+		2.Coverage Factless Fact Table : Defining Eligibility - Records what COULD Happen - not what DID Happen 
+									   : It enables "What should have happened but didn't?"
+--------------------------------
+
+Early arriving Fact And Late arriving dimension :
+Solution : 
+-->1. If the product ID is missing from the prod dim , then load it to temp table (temp_fact)and process later
+-->2. 0 wid :: Add the 0 or the null on this case so this should not get miss downstream aggregations
+
+---------------------------------
